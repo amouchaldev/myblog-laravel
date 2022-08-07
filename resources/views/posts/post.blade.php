@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     <div class="row">
         {{-- start post --}}
@@ -8,11 +9,35 @@
             <p>{{ $post->body }}</p>
         </div>
         {{-- end post --}}
+        {{-- start comments --}}
+        <div class="col-12 mb-3 bg-primary py-3 rounded">
+            <h2 class="mb-3 text-light">Comment(s)</h2>
+            @forelse($post->comments as $comment)
+            <div>
+                @if(in_array(session()->get('loginRole'), ['admin', 'owner']))
+                    <form action="{{ route('comment.destroy', $comment->id) }}" method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <button class="btn btn-sm btn-danger px-3" title="delete"><i class="fa-solid fa-xmark"></i></button>
+                    </form>
+                @endif
+                <div class="mb-3 alert alert-light">
+                    <span class="badge bg-primary mb-2">{{ $comment->fullName }}</span>
+                    <p>{{ $comment->content }}</p>
+                </div>
+            </div>
+            @empty 
+                <div class="mb-3 alert alert-light">
+                    <p>No Comment Yet</p>
+                </div>
+            @endforelse
+        </div>
 
+        {{-- end comments --}}
 
           {{-- start add comment --}}
           <div class="col-12 mb-3">
-            <label for="comment" class="form-label h2 mb-3">Add Comment</label>
+            <h2 class="mb-3">Add Comment</h2>
             @if(session()->has('success')) <p class="alert alert-success">{{ session()->get('success') }}</p> @endif
            <form action="{{ route('comment.add', $post->id) }}" method="POST">
             @csrf
@@ -32,5 +57,7 @@
            </form>
        </div>
        {{-- end add comment --}}
+
+
     </div>
 @endsection

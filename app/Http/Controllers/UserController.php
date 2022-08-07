@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -24,9 +25,10 @@ class UserController extends Controller
         ]);
         $user = User::where('email', $request->input('email'))->first();
         if ($user) {
-            if ($user->password == $request->input('password')) {
+            if (Hash::check($request->input('password'), $user->password)) {
                 session()->put('loginEmail', $request->input('email'));
                 session()->put('loginFirstName', $user->firstName);
+                session()->put('loginRole', $user->role);
                 return redirect()->route('posts');
             }
             else {
@@ -48,4 +50,20 @@ class UserController extends Controller
         }
     }
 
+
+    // add user view
+    public function create() {
+        return view('auth.create');
+    }
+    public function store(Request $request) {
+        $request->validate([
+            'email' => 'email|unique:users',
+            'password' => 'min:8',
+        ]);
+        $user = new User($request->except(['_token', 'password']));
+        $user->password = Hash::make($request->input('password'));
+        if ($user->save()) {
+            return 'good';
+        }
+    }
 }

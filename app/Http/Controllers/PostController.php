@@ -45,7 +45,7 @@ class PostController extends Controller
         return view ('posts.index', ['posts' => $posts, 'user' => User::where('email', session()->get('loginEmail'))->first()]);
     }
     public function fetchPost($id) {
-        $post = Post::with('comments')->with('images')->find($id);
+        $post = Post::with(['comments' => function ($query) { $query->where('published', 1); }])->with('images')->find($id);
         return view('posts.post', ['post' => $post, 'user' => User::where('email', session()->get('loginEmail'))->first()]);
     } 
     public function edit($id) {
@@ -62,14 +62,15 @@ class PostController extends Controller
                 Storage::delete($post->images[0]->path);
                 $post->images[0]->path = $path;
                 $post->images[0]->save();
+                return back()->with('success', 'Post Updated Successfully');
             }
             else {
                 $img = new Image(['path' => $path]);
                 $post->images()->save($img);
                 return back()->with('success', 'Post Updated Successfully');
             }
-            return back()->with('success', 'Post Updated Successfully');
         }
+        return back()->with('success', 'Post Updated Successfully');
     }
 
     public function destroy($id) {

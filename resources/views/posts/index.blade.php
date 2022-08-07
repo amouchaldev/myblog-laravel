@@ -17,23 +17,23 @@
                       <div class="card-body">
                         <h4 class="card-title">{{ $post->title }}</h4>
                             @if ($post->comments_count == 1)
-                            <p class="card-text badge bg-info">{{ $post->comments_count }} comment</p>
+                            <p class="card-text badge bg-light text-primary">{{ $post->comments_count }} comment</p>
                             @elseif($post->comments_count > 1)
-                            <p class="card-text badge bg-info">{{ $post->comments_count }} comments</p>
+                            <p class="card-text badge bg-light text-primary">{{ $post->comments_count }} comments</p>
                             @else
                             <p class="card-text badge bg-light text-primary">No Comment Yet</p>
                             @endif
                         </div>
                 </a>
-                @if(session()->has('loginEmail'))
-                <div>
-                    <a class="btn btn-secondary btn-sm mt-2 px-3" href="{{ route('post.edit', $post->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <form action="{{ route('post.destroy', $post->id) }}" class="d-inline" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm mt-2 px-3"><i class="fa-solid fa-xmark"></i></button>
-                    </form>
-                </div>
+                @if(in_array(session()->get('loginRole'), ['admin', 'owner']))
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-2 px-3" href="{{ route('post.edit', $post->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <form action="{{ route('post.destroy', $post->id) }}" class="d-inline" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm mt-2 px-3"><i class="fa-solid fa-xmark"></i></button>
+                        </form>
+                    </div>
                 @endif
                 </div>
                 @empty

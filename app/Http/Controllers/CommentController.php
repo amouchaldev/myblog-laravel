@@ -13,7 +13,7 @@ class CommentController extends Controller
         $request->validate([
             'fullName' => 'required|min:7|max:64',
             'email' => 'required|email|max:64',
-            'comment' => 'required|min:20|max:200'
+            'comment' => 'required|min:20|max:1000'
         ]);
         $post = Post::findOrFail($id);
         $comment = new Comment([
@@ -29,5 +29,17 @@ class CommentController extends Controller
    public function fetchUnpublishedComments() {
         $comments = Comment::where('published', 0)->with('post')->get();
         return view('comments.review', ['comments' => $comments]);
+   }
+
+   public function publishComment($id) {
+        $comment = Comment::findOrFail($id);
+        $comment->published = 1;
+        $comment->update();
+        return back();
+   }
+
+   public function destroyComment($id) {
+        Comment::destroy($id);
+        return back();
    }
 }

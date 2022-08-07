@@ -37,9 +37,18 @@ Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit'
 Route::put('/post/{id}/update', [PostController::class, 'update'])->name('post.update');
 // delete post
 Route::delete('/post/{id}/delete', [PostController::class, 'destroy'])->name('post.destroy');
-
 // add comment
 Route::post('comment/{id}/add', [CommentController::class, 'store'])->name('comment.add');
 
 // comments review
-Route::get('/comments/review', [CommentController::class, 'fetchUnpublishedComments'])->name('comments');
+Route::get('/comments/review', [CommentController::class, 'fetchUnpublishedComments'])->name('comments.review');
+// publish comment route
+Route::put('/comments/{id}/publish', [CommentController::class, 'publishComment'])->name('comments.publish');
+// delete comment route 
+Route::delete('/comment/{id}/destroy', [CommentController::class, 'destroyComment'])->name('comment.destroy');
+
+
+
+// add users
+Route::get('users/create', [UserController::class, 'create'])->name('users.create');
+Route::post('users/store', [UserController::class, 'store'])->name('users.store');

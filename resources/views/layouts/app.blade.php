@@ -1,3 +1,4 @@
+{{-- {{ dd(session()->get('loginRole')) }} --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,6 +33,11 @@
                 <li class="nav-item">
                     <a class="nav-link text-light" href="{{ route('create') }}">Add Post <span class="visually-hidden">(current)</span></a>
                 </li>
+                    @if(in_array(session()->get('loginRole'), ['admin', 'owner']))
+                        <li class="nav-item">
+                            <a class="nav-link text-light" href="{{ route('comments.review') }}">Review Comments <span class="visually-hidden">(current)</span></a>
+                        </li>
+                    @endif
                 @endif
                 
                 {{-- <li class="nav-item">
@@ -46,8 +52,10 @@
                     
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <li><a class="dropdown-item" href="{{ route('logout') }}">logout</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        @if(session()->get('loginRole') === 'owner')
+                            <li><a class="dropdown-item" href="{{ route('users.create') }}">Add User</a></li>
+                        @endif
+                        {{-- <li><a class="dropdown-item" href="#">Something else here</a></li> --}}
                         </ul>
                     </div>
             @else 
