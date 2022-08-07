@@ -26,6 +26,7 @@ class UserController extends Controller
         if ($user) {
             if ($user->password == $request->input('password')) {
                 session()->put('loginEmail', $request->input('email'));
+                session()->put('loginFirstName', $user->firstName);
                 return redirect()->route('posts');
             }
             else {

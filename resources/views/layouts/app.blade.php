@@ -41,7 +41,7 @@
             @if(session()->has('loginEmail'))
                     <div class="dropdown">
                         <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ $user->firstName}}
+                            {{ session()->get('loginFirstName') }}
                         </a>
                     
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">

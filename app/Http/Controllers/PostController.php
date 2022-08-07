@@ -62,13 +62,13 @@ class PostController extends Controller
                 Storage::delete($post->images[0]->path);
                 $post->images[0]->path = $path;
                 $post->images[0]->save();
-                return back()->with('success', 'Post Updated Successfully');
             }
             else {
                 $img = new Image(['path' => $path]);
                 $post->images()->save($img);
                 return back()->with('success', 'Post Updated Successfully');
             }
+            return back()->with('success', 'Post Updated Successfully');
         }
     }
 

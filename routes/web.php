@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,3 +37,9 @@ Route::get('/post/{id}/edit', [PostController::class, 'edit'])->name('post.edit'
 Route::put('/post/{id}/update', [PostController::class, 'update'])->name('post.update');
 // delete post
 Route::delete('/post/{id}/delete', [PostController::class, 'destroy'])->name('post.destroy');
+
+// add comment
+Route::post('comment/{id}/add', [CommentController::class, 'store'])->name('comment.add');
+
+// comments review
+Route::get('/comments/review', [CommentController::class, 'fetchUnpublishedComments'])->name('comments');

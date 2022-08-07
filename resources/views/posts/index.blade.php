@@ -23,10 +23,9 @@
                             @else
                             <p class="card-text badge bg-light text-primary">No Comment Yet</p>
                             @endif
-                        @if(session()->has('loginEmail'))
-                        @endif
-                    </div>
+                        </div>
                 </a>
+                @if(session()->has('loginEmail'))
                 <div>
                     <a class="btn btn-secondary btn-sm mt-2 px-3" href="{{ route('post.edit', $post->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
                     <form action="{{ route('post.destroy', $post->id) }}" class="d-inline" method="POST">
@@ -35,14 +34,14 @@
                         <button class="btn btn-danger btn-sm mt-2 px-3"><i class="fa-solid fa-xmark"></i></button>
                     </form>
                 </div>
+                @endif
                 </div>
                 @empty
-                    
+                    <p>No Post Yet</p> 
                 @endforelse
             </div>
+          
         </div>
-        {{-- <div class="col-4">
-            <img src="{{ Storage::url('posts/ads.png') }}" alt="ads" class="img-fluid">
-        </div> --}}
+
     </div>  
 @endsection
