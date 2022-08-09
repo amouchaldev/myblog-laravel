@@ -63,7 +63,7 @@ class UserController extends Controller
         $user = new User($request->except(['_token', 'password']));
         $user->password = Hash::make($request->input('password'));
         if ($user->save()) {
-            return 'good';
+            return back()->with('success', "$request->firstName Added Successfully As $request->role");
         }
     }
 }

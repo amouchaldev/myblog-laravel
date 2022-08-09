@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row">
+    <div class="row py-5">
         <div class="col-8 mx-auto">
             @if(session()->has('success'))
                 <p class="alert alert-success">{{ session()->get('success') }}</p>

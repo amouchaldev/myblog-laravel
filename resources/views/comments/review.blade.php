@@ -1,11 +1,15 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row">
+<div class="container">
+    <div class="row py-5">
         {{--  start comments --}}
         <div class="col-12">
             @forelse($comments as $comment)
-            <div class="row alert alert-light mb-3">
-                <div class="col-10">{{ $comment->content }}</div>
+            <div class="row alert alert-info mb-3">
+                <div class="col-10">
+                    <p class="mb-2">{{ $comment->content }} </p>
+                    <small class="text-muted">{{ $comment->created_at->diffForHumans() }}</small>
+                </div>
                 <div class="col-2 d-flex justify-content-center align-items-center">
                     {{-- update --}}
                     <form action="{{ route('comments.publish', $comment->id) }}" method="POST">
@@ -22,8 +26,10 @@
                 </div>
             </div>
             @empty 
+                <p class="alert alert-secondary">No Comment Yet</p>
             @endforelse
         </div>
         {{-- end comments --}}
     </div>
+</div>
 @endsection

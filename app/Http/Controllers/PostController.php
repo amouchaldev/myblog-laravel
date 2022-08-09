@@ -22,7 +22,7 @@ class PostController extends Controller
             $request->validate([
                 'title' => 'required|min:5',
                 'body' => 'required|min:5',
-                'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:5000'
+                'image' => 'required|image|mimes:png,jpg,jpeg,gif|max:10000'
             ]);
             // Create New Post Object
             $post = new Post();
@@ -41,8 +41,10 @@ class PostController extends Controller
     
     }
     public function fetchPosts(){
+        $postsForSlider = Post::orderBy('created_at', 'desc')->with('images')->take(3)->get();
         $posts = Post::withCount('comments')->with('images')->get();
-        return view ('posts.index', ['posts' => $posts, 'user' => User::where('email', session()->get('loginEmail'))->first()]);
+        $mostPostCommented = Post::withCount('comments')->orderBy('comments_count', 'desc')->take(7)->get();
+        return view ('posts.index', ['posts' => $posts, 'mostPostCommented' => $mostPostCommented, 'postsForSlider' => $postsForSlider]);
     }
     public function fetchPost($id) {
         $post = Post::with(['comments' => function ($query) { $query->where('published', 1); }])->with('images')->find($id);

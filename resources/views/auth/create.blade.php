@@ -1,8 +1,11 @@
 @extends('layouts.app')
 @section('content')
-    <div class="row mt-3">
+    <div class="row py-5">
         <div class="col-6 mx-auto">
             <h2>ADD NEW USER</h2>
+            @if(session()->has('success'))
+                <p class="alert alert-success">{{ session()->get('success') }}</p>
+            @endif
             <form action="{{ route('users.store') }}" method="POST">
                 <div class="mb-3">
                     <label for="firstName" class="form-label">first name</label>
