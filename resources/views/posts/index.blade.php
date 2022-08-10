@@ -2,8 +2,7 @@
 @section('style')
     .carousel .carousel-item {
         height: 497px;
-    }
-    
+    } 
     .carousel-item img {
         position: absolute;
         object-fit: cover;
@@ -42,9 +41,7 @@
         text-overflow: ellipsis;
         text-align: center;
       }
-
       {{-- media query --}}
-
       @media only screen and (min-width:576px ) and (max-width: 750px) {
         .img-container {
             height: 149px;
@@ -90,8 +87,9 @@
 
 @section('content')
 <section class="container">
-    <div class="row justify-content-between">
-        <div class="col-lg-8">
+    <section class="row justify-content-between">
+        {{-- latest posts --}}
+        <article class="col-lg-8">
             <div class="row">
                 <h2 class="last-posts position-relative mb-4 text-capitalize last-posts h4">latest</h2>
                 @forelse($posts as $post)
@@ -127,9 +125,9 @@
                     <p>No Post Yet</p> 
                 @endforelse
             </div>
-        </div>
+        </article>
         {{-- most commented posts --}}
-        <div class="col-lg-3 bg-light rounded most-post-commented align-self-baseline pb-3 mb-3">
+        <aside class="col-lg-3 bg-light rounded most-post-commented align-self-baseline pb-3 mb-3">
             <h4 class="mt-3 position-relative">Most Post Commented</h4>
             @forelse($mostPostCommented as $post)
             <a href="{{ route('post', $post->id) }}" class="text-dark text-decoration-none">
@@ -140,7 +138,7 @@
             @empty 
             @endforelse
             </a>
-        </div>
-    </div>  
+        </aside>
+    </section>  
 </section>
 @endsection

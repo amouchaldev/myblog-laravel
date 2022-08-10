@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+     // store comments
    public function store(Request $request,$id) {
-    // return $request;
         $request->validate([
             'fullName' => 'required|min:7|max:64',
             'email' => 'required|email|max:64',
@@ -24,20 +24,19 @@ class CommentController extends Controller
         $comment->post()->associate($post)->save();
         return back()->with('success', 'Thank You, Your Comment Send Successfully It will Reviewed Before Published');
    }
-
-
+//    get unpublished comments (comments that have published = 0 in database)
    public function fetchUnpublishedComments() {
         $comments = Comment::where('published', 0)->with('post')->get();
         return view('comments.review', ['comments' => $comments]);
    }
-
+//    get published comments (comments that have published = 1 in database)
    public function publishComment($id) {
         $comment = Comment::findOrFail($id);
         $comment->published = 1;
         $comment->update();
         return back();
    }
-
+// delete comment 
    public function destroyComment($id) {
         Comment::destroy($id);
         return back();

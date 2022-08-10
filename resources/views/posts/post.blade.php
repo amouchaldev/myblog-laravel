@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('style')
-    header {
+    section > header {
         height: 556px;
     }
     .post-title {
@@ -12,24 +12,26 @@
     }
 @endsection
 @section('content')
+<section>
+{{-- start header --}}
+    <header class="position-relative mb-3">
+        <div class="overlay position-absolute w-100 h-100 start-0 top-0 bg-dark"></div>
+        <img src="{{ Storage::url($post->images[0]->path ?? null) }}" alt="image" class="position-absolute top-0 start-0 mb-3 post-image h-100 w-100"> 
+        <h1 class="mb-3 post-title position-absolute text-center top-50 w-100 display-4 text-light">{{ $post->title }}</h1>
+    </header>
+{{-- end header --}}
 
-<header class="position-relative mb-3">
-    <div class="overlay position-absolute w-100 h-100 start-0 top-0 bg-dark"></div>
-    <img src="{{ Storage::url($post->images[0]->path ?? null) }}" alt="image" class="position-absolute top-0 start-0 mb-3 post-image h-100 w-100"> 
-    <h1 class="mb-3 post-title position-absolute text-center top-50 w-100 display-4 text-light">{{ $post->title }}</h1>
-</header>
-
-<div class="container">
+<article class="container">
     <div class="row">
 
         {{-- start post --}}
-            <div class="col-12 mb-3">
+            <section class="col-12 mb-3">
                 <p class="lh-lg">{{ $post->body }}</p>
-            </div>
-            {{-- end post --}}
+            </section>
+        {{-- end post --}}
 
             {{-- start comments --}}
-            <div class="col-12 mb-3 bg-primary py-3 rounded">
+            <section class="col-12 mb-3 bg-primary py-3 rounded">
                 <h2 class="mb-3 text-light">Comment(s)</h2>
                 @forelse($post->comments as $comment)
                 <div>
@@ -51,11 +53,11 @@
                         <p>No Comment Yet</p>
                     </div>
                 @endforelse
-            </div>
+            </section>
             {{-- end comments --}}
     
               {{-- start add comment --}}
-            <div class="col-12 mb-3">
+            <section class="col-12 mb-3">
                     <h2 class="mb-3">Add Comment</h2>
                     @if(session()->has('success')) <p class="alert alert-success">{{ session()->get('success') }}</p> @endif
                 <form action="{{ route('comment.add', $post->id) }}" method="POST">
@@ -74,9 +76,11 @@
                         </div>
                         <button class="btn btn-primary " type="submit">ADD</button>
                 </form>
-            </div>
+            </section>
            {{-- end add comment --}}
-           
+        
         </div>
-    </div>
+    </article>                                                      
+</section>
+
 @endsection

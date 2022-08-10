@@ -17,6 +17,7 @@ class UserController extends Controller
     {
         return view('auth.login');
     }
+
     public function loginHandle(Request $request) 
     {   
         $request->validate([
@@ -36,13 +37,10 @@ class UserController extends Controller
             }
         }
         else {
-            // return 'hi';
             return back()->with('fail', 'Invalid Email Or Password');
         }
     }
-    public function dashboard() {
-        return view('auth.dashboard', ['user' => User::where('email', session()->get('loginEmail'))->first()]);
-    }
+
     public function logout() {
         if (session()->has('loginEmail')) {
             session()->pull('loginEmail');
@@ -50,11 +48,11 @@ class UserController extends Controller
         }
     }
 
-
     // add user view
     public function create() {
         return view('auth.create');
     }
+
     public function store(Request $request) {
         $request->validate([
             'email' => 'email|unique:users',
@@ -66,4 +64,5 @@ class UserController extends Controller
             return back()->with('success', "$request->firstName Added Successfully As $request->role");
         }
     }
+    
 }

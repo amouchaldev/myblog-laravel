@@ -14,8 +14,9 @@ class PostController extends Controller
 {
     // return add post view
     public function create() {
-        return view('posts.create', ['user' => User::where('email', session()->get('loginEmail'))->first()]);
+        return view('posts.create');
     }
+    // store post
     public function add(Request $request) {
         $user = User::where('email', session()->get('loginEmail'))->first();
         if ($user) {
@@ -40,19 +41,23 @@ class PostController extends Controller
         }
     
     }
+
     public function fetchPosts(){
         $postsForSlider = Post::orderBy('created_at', 'desc')->with('images')->take(3)->get();
         $posts = Post::withCount('comments')->with('images')->get();
         $mostPostCommented = Post::withCount('comments')->orderBy('comments_count', 'desc')->take(7)->get();
         return view ('posts.index', ['posts' => $posts, 'mostPostCommented' => $mostPostCommented, 'postsForSlider' => $postsForSlider]);
     }
+
     public function fetchPost($id) {
         $post = Post::with(['comments' => function ($query) { $query->where('published', 1); }])->with('images')->find($id);
-        return view('posts.post', ['post' => $post, 'user' => User::where('email', session()->get('loginEmail'))->first()]);
+        return view('posts.post', ['post' => $post]);
     } 
+    
     public function edit($id) {
-        return view('posts.edit', ['post' => Post::findOrFail($id), 'user' => User::where('email', session()->get('loginEmail'))->first()]);
+        return view('posts.edit', ['post' => Post::findOrFail($id)]);
     }
+
     public function update(Request $request, $id) {
        	$post = Post::findOrFail($id);
         $post->title = $request->input('title');

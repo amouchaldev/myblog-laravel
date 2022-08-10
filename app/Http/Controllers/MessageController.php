@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    // store message from contact us
     public function send(Request $request) {
         $request->validate([
             'fullName' => 'required|min:7',
@@ -18,7 +19,7 @@ class MessageController extends Controller
             return redirect('/#contact-us')->with('success', 'Your Message Send Successfully');
         }
     }
-
+    // get all messages 
     public function fetchMessages() {
         $messages = Message::all();
         return view('messages.index', ['messages' => $messages]);
