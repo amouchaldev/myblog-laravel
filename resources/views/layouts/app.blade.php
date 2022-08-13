@@ -61,7 +61,9 @@
                                         <li class="dropdown-item">
                                             <a class="nav-link text-dark" href="{{ route('getMessages') }}">Messages<span class="visually-hidden">(current)</span></a>
                                         </li>
-            
+                                        <li class="dropdown-item">
+                                            <a class="nav-link text-dark" href="{{ route('post.archive') }}">Archive<span class="visually-hidden">(current)</span></a>
+                                        </li>
                                     </ul>
                                 </li>
                             @endif

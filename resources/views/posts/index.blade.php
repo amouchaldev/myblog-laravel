@@ -48,7 +48,7 @@
         }
       }
 @endsection
-
+{{-- {{ dd(substr($postsForSlider[0]->images[0]->path, 0, 5)) }} --}}
 @section('slider')
 <div id="carouselExampleDark" class="carousel carousel-dark slide mb-3" data-bs-ride="carousel">
     <div class="carousel-indicators">
@@ -58,7 +58,13 @@
     </div>
     <div class="carousel-inner">
       <div class="carousel-item active" data-bs-interval="10000">
-        <img src="{{ Storage::url($postsForSlider[0]->images[0]->path)  }}" class="d-block w-100" alt="...">
+        <img src="
+        @if(substr($postsForSlider[0]->images[0]->path, 0, 5) == 'http:' || substr($postsForSlider[0]->images[0]->path, 0, 6) == 'https:')
+            {{ $postsForSlider[0]->images[0]->path  ?? null }}
+        @else 
+            {{ Storage::url($postsForSlider[0]->images[0]->path ?? null)  }}
+        @endif
+        " class="d-block w-100" alt="...">
         <div class="carousel-caption d-none d-md-block">
           <h5 class="h2">{{ $postsForSlider[0]->title }}</h5>
           <p class="truncate">{{ $postsForSlider[0]->body }}</p>
@@ -66,7 +72,13 @@
       </div>
       @php for ($i = 1; $i < count($postsForSlider); $i++)  { @endphp
         <div class="carousel-item">
-            <img src="{{ Storage::url($postsForSlider[$i]->images[0]->path)  }}" class="d-block w-100" alt="...">
+            <img src="
+            @if(substr($postsForSlider[$i]->images[0]->path, 0, 5) == 'http:' || substr($postsForSlider[0]->images[0]->path, 0, 6) == 'https:')
+                {{ $postsForSlider[$i]->images[0]->path  ?? null }}
+            @else 
+                {{ Storage::url($postsForSlider[$i]->images[0]->path ?? null)  }}
+            @endif
+            " class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
             <h5 class="h2">{{ $postsForSlider[$i]->title }}</h5>
             <p class="truncate">{{ $postsForSlider[$i]->body }}</p>
@@ -96,7 +108,7 @@
                 <div class="col-sm-6 mb-4">
                     <a class="text-start card text-decoration-none" href="{{ route('post', $post->id) }}">
                         <div class="img-container">
-                            <img class="card-img-top w-100 h-100" src="{{ Storage::url($post->images[0]->path ?? null) }}" alt="Title" >
+                            <img class="card-img-top w-100 h-100" src=" {{ $post->images[0]->path }}" alt="Title" >
                         </div>
                       <div class="card-body">
                         <h4 class="card-title post-title">{{ $post->title }}</h4>
@@ -116,7 +128,7 @@
                         <form action="{{ route('post.destroy', $post->id) }}" class="d-inline" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-danger btn-sm mt-2 px-3"><i class="fa-solid fa-xmark"></i></button>
+                            <button class="btn btn-warning btn-sm mt-2 px-3"><i class="fa-solid fa-xmark"></i></button>
                         </form>
                     </div>
                 @endif

@@ -16,7 +16,13 @@
 {{-- start header --}}
     <header class="position-relative mb-3">
         <div class="overlay position-absolute w-100 h-100 start-0 top-0 bg-dark"></div>
-        <img src="{{ Storage::url($post->images[0]->path ?? null) }}" alt="image" class="position-absolute top-0 start-0 mb-3 post-image h-100 w-100"> 
+        <img src="
+            @if(substr($post->images[0]->path, 0, 6) === 'https:' || substr($post->images[0]->path, 0, 5) === 'http:')
+                {{ $post->images[0]->path ?? null }}
+            @else
+                {{ Storage::url($post->images[0]->path ?? null) }}
+            @endif
+        " alt="image" class="position-absolute top-0 start-0 mb-3 post-image h-100 w-100"> 
         <h1 class="mb-3 post-title position-absolute text-center top-50 w-100 display-4 text-light">{{ $post->title }}</h1>
     </header>
 {{-- end header --}}

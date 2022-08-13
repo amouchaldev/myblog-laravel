@@ -55,7 +55,14 @@ class PostController extends Controller
     } 
     
     public function edit($id) {
-        return view('posts.edit', ['post' => Post::findOrFail($id)]);
+        $post = Post::find($id);
+        if ($post) {
+            return view('posts.edit', ['post' => $post]);
+        }
+        else {
+            $post = Post::onlyTrashed()->whereId($id)->first();
+            return view('posts.edit', ['post' => $post]);
+        }
     }
 
     public function update(Request $request, $id) {
@@ -79,10 +86,24 @@ class PostController extends Controller
         }
         return back()->with('success', 'Post Updated Successfully');
     }
-
+    // fetch deleted posts
+    public function archive() {
+        $deletedPosts = Post::onlyTrashed()->get();
+        return view('posts.archive', ['posts' => $deletedPosts]);
+    }
     public function destroy($id) {
         $post = Post::findOrFail($id);
         $post->delete();
         return back()->with('success', "Post Deleted Successfully");
     } 
+    public function restore($id) {
+        $post = Post::onlyTrashed()->whereId($id)->first();
+        $post->restore();
+        return redirect()->back();
+    }
+    public function forceDelete($id) {
+        $post = Post::onlyTrashed()->whereId($id)->first();
+        $post->forceDelete();
+        return redirect()->back();
+    }
 }
